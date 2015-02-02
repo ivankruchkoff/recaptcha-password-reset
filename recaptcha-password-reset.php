@@ -16,7 +16,7 @@ class ReCAPTCHA_Password_Reset_Form {
 	private $secret;
 
 	public function __construct() {
-		$this->site_key  = 'REPLACEME';
+		$this->site_key = 'REPLACEME';
 		$this->secret = 'REPLACEME';
 
 		// adds the captcha to the password reset form
@@ -44,16 +44,12 @@ class ReCAPTCHA_Password_Reset_Form {
 	 *
 	 * @return WP_Error
 	 */
-	public function action_lostpassword_post() {
-
+    public function action_lostpassword_post() {
 		if ( ! isset( $_POST['g-recaptcha-response'] ) || empty( $_POST['g-recaptcha-response'] ) ) {
-			return new WP_Error( 'empty_captcha', 'CAPTCHA should not be empty');
-		}
-
-		if( isset( $_POST['g-recaptcha-response'] ) && $this->recaptcha_response() == 'false' ) {
-			return new WP_Error( 'invalid_captcha', 'CAPTCHA response was incorrect');
-		}
-
+			wp_die( __( 'CAPTCHA should not be empty' ) );
+		} elseif( isset( $_POST['g-recaptcha-response'] ) && $this->recaptcha_response() == 'false' ) {
+			wp_die( __( 'CAPTCHA response was incorrect' ) );
+        }
 	}
 
 
